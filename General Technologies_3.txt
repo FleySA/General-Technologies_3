@@ -1,0 +1,34 @@
+1. Вывести данные о товарах (название товара, цена со скидкой 0.5%):
+
+	SELECT ProductName, Price * 0.995 AS DiscountedPrice
+	FROM Products;
+
+2. Вывести заказы клиентов не из France (номер заказа, имя клиента, страна клиента):
+
+	SELECT Orders.OrderID, Customers.CustomerName, Customers.Country
+	FROM Orders
+	JOIN Customers ON Orders.CustomerID = Customers.CustomerID
+	WHERE Customers.Country <> 'France';
+
+3.Вывести название и стоимость в USD одного самого дорогого проданного товара (без использования агрегации):
+
+	SELECT ProductName, Price * 0.9 AS PriceInUSD
+	FROM Products
+	ORDER BY Price DESC
+	LIMIT 1;
+
+4. Вывести список стран, которые поставляют морепродукты:
+
+	SELECT DISTINCT Suppliers.Country
+	FROM Suppliers
+	JOIN Products ON Suppliers.SupplierID = Products.SupplierID
+	WHERE Products.CategoryID = (SELECT CategoryID FROM Categories WHERE CategoryName = 'Seafood');
+
+5.Вывести два самых дорогих товара из категории Beverages из USA:
+
+	SELECT ProductName, Price
+	FROM Products
+	WHERE CategoryID = (SELECT CategoryID FROM Categories WHERE CategoryName = 'Beverages')
+  	AND SupplierID IN (SELECT SupplierID FROM Suppliers WHERE Country = 'USA')
+	ORDER BY Price DESC
+	LIMIT 2;
